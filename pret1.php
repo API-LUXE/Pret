@@ -1,0 +1,241 @@
+<!DOCTYPE html>  <html lang="fr">  
+<head>  
+  <meta charset="UTF-8" />  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />  
+  <title>Demande de Prêt</title>  
+  <link rel="stylesheet" href="style.css" />  
+<style>  
+body {  
+  margin: 0;  
+  padding: 0;  
+  font-family: 'Segoe UI', sans-serif;  
+  background-color: #f4f6f8;  
+  color: #333;  
+}  .form-container {
+max-width: 600px;
+margin: 40px auto;
+background: #fff;
+padding: 30px;
+border-radius: 12px;
+box-shadow: 0 0 20px rgba(0,0,0,0.05);
+}
+
+header {
+text-align: center;
+margin-bottom: 30px;
+}
+
+.logo {
+width: 100px;
+height: auto;
+margin-bottom: 10px;
+}
+
+h1 {
+font-size: 24px;
+color: #1a1a1a;
+}
+
+.form-group {
+margin-bottom: 20px;
+}
+
+label {
+font-weight: 600;
+display: block;
+margin-bottom: 8px;
+}
+
+input {
+width: 94%;
+padding: 12px;
+border-radius: 6px;
+border: 1px solid #ccc;
+font-size: 16px;
+}
+
+button {
+width: 100%;
+padding: 14px;
+background-color: #007bff;
+color: white;
+border: none;
+font-size: 16px;
+border-radius: 6px;
+cursor: pointer;
+transition: background-color 0.2s ease;
+}
+
+button:hover {
+background-color: #0056b3;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+.form-container {
+padding: 20px;
+margin: 20px;
+}
+
+h1 {
+font-size: 20px;
+}
+
+input, button {
+font-size: 15px;
+}
+}
+</style>
+
+</head>  
+<body>  
+  <div class="form-container">  
+   <header>  
+  <div style="text-align: right; margin-bottom: 10px;">  
+    <label for="languageSelect" style="font-weight: 600;">Langue :</label>  
+    <select id="languageSelect" onchange="changeLanguage()" style="padding: 6px; border-radius: 4px;">  
+      <option value="fr">Français</option>  
+      <option value="de">Deutsch</option>  
+      <option value="es">Español</option>  
+      <option value="pt">Português</option>  
+    </select>  
+  </div>  
+  <img src="image/ld.png" alt="Logo" class="logo" />  
+  <h1 id="formTitle">Formulaire de Demande de Prêt</h1>  
+</header>  <form id="loanForm">  
+  <div class="form-group">  
+    <label for="fullname">Nom et Prénom</label>  
+    <input type="text" id="fullname" placeholder="Jean Dupont" required />  
+  </div>  
+
+  <div class="form-group">  
+    <label for="amount">Montant du prêt ($)</label>  
+    <input type="number" id="amount" placeholder="Ex : 10000" required />  
+  </div>  
+
+  <div class="form-group">  
+    <label for="duration">Durée de remboursement (mois)</label>  
+    <input type="number" id="duration" placeholder="Ex : 12" required />  
+  </div>  
+
+  <button type="submit">Continuer</button>  
+</form>
+
+  </div>    <script>  
+    document.getElementById('loanForm').addEventListener('submit', function(e) {  
+      e.preventDefault();  
+        
+      const name = document.getElementById('fullname').value;  
+      const amount = parseFloat(document.getElementById('amount').value);  
+      const duration = parseInt(document.getElementById('duration').value);  
+      const interestRate = 0.05;  
+        
+      const totalRepayment = amount * (1 + interestRate);  
+      const monthlyRepayment = totalRepayment / duration;  
+  
+      const data = {  
+        name,  
+        amount,  
+        duration,  
+        totalRepayment: totalRepayment.toFixed(2),  
+        monthlyRepayment: monthlyRepayment.toFixed(2)  
+      };  
+  
+      localStorage.setItem('loanData', JSON.stringify(data));  
+      window.location.href = 'pret2.php';  
+    });  
+  </script>  <script>  
+  const translations = {  
+    fr: {  
+      title: "Formulaire de Demande de Prêt",  
+      name: "Nom et Prénom",  
+      placeholderName: "Jean Dupont",  
+      amount: "Montant du prêt ($)",  
+      placeholderAmount: "Ex : 10000",  
+      duration: "Durée de remboursement (mois)",  
+      placeholderDuration: "Ex : 12",  
+      button: "Continuer"  
+    },  
+    de: {  
+      title: "Darlehensantragsformular",  
+      name: "Vor- und Nachname",  
+      placeholderName: "Max Mustermann",  
+      amount: "Darlehensbetrag ($)",  
+      placeholderAmount: "z. B.: 10000",  
+      duration: "Rückzahlungsdauer (Monate)",  
+      placeholderDuration: "z. B.: 12",  
+      button: "Weiter"  
+    },  
+    es: {  
+      title: "Formulario de Solicitud de Préstamo",  
+      name: "Nombre y Apellido",  
+      placeholderName: "Juan Pérez",  
+      amount: "Monto del préstamo ($)",  
+      placeholderAmount: "Ej: 10000",  
+      duration: "Plazo de reembolso (meses)",  
+      placeholderDuration: "Ej: 12",  
+      button: "Continuar"  
+    },  
+    pt: {  
+      title: "Formulário de Pedido de Empréstimo",  
+      name: "Nome completo",  
+      placeholderName: "João Silva",  
+      amount: "Valor do empréstimo ($)",  
+      placeholderAmount: "Ex: 10000",  
+      duration: "Duração do reembolso (meses)",  
+      placeholderDuration: "Ex: 12",  
+      button: "Continuar"  
+    }  
+  };  
+  
+  function changeLanguage() {  
+    const lang = document.getElementById("languageSelect").value;  
+    localStorage.setItem("selectedLang", lang);  
+  
+    const t = translations[lang];  
+  
+    document.getElementById("formTitle").textContent = t.title;  
+    document.querySelector("label[for='fullname']").textContent = t.name;  
+    document.getElementById("fullname").placeholder = t.placeholderName;  
+  
+    document.querySelector("label[for='amount']").textContent = t.amount;  
+    document.getElementById("amount").placeholder = t.placeholderAmount;  
+  
+    document.querySelector("label[for='duration']").textContent = t.duration;  
+    document.getElementById("duration").placeholder = t.placeholderDuration;  
+  
+    document.querySelector("button[type='submit']").textContent = t.button;  
+  }  
+  
+  // Appliquer la langue sauvegardée ou par défaut  
+  window.addEventListener("DOMContentLoaded", () => {  
+    const savedLang = localStorage.getItem("selectedLang") || "fr";  
+    document.getElementById("languageSelect").value = savedLang;  
+    changeLanguage();  
+  });  
+  
+  // Soumission du formulaire  
+  document.getElementById('loanForm').addEventListener('submit', function(e) {  
+    e.preventDefault();  
+  
+    const name = document.getElementById('fullname').value;  
+    const amount = parseFloat(document.getElementById('amount').value);  
+    const duration = parseInt(document.getElementById('duration').value);  
+    const interestRate = 0.05;  
+  
+    const totalRepayment = amount * (1 + interestRate);  
+    const monthlyRepayment = totalRepayment / duration;  
+  
+    const data = {  
+      name,  
+      amount,  
+      duration,  
+      totalRepayment: totalRepayment.toFixed(2),  
+      monthlyRepayment: monthlyRepayment.toFixed(2)  
+    };  
+  
+    localStorage.setItem('loanData', JSON.stringify(data));  
+    window.location.href = 'pret2.php';  
+  });  
+</script>  </body>  
+</html>
